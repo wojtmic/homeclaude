@@ -2,6 +2,7 @@ import subprocess
 from fastmcp import FastMCP
 from pathlib import Path
 from time import sleep
+import os
 
 term_mcp = FastMCP('terminal')
 
@@ -13,10 +14,10 @@ def term_open() -> str:
     """Opens a Clade terminal if it's not already open"""
     if is_term_open(): return 'terminal already open'
     subprocess.Popen([
-        'kitty', '--listen-on', 'unix:/tmp/homeclaude-kitty', '-d', '/home/wojtmic/claude-corner', '--title', "Claude's Private Terminal"
+        'kitty', '--listen-on', 'unix:/tmp/homeclaude-kitty', '-d', os.path.expanduser('~/claude-corner'), '--title', "Claude's Private Terminal"
     ])
     sleep(0.5)
-    subprocess.run(['kitten', '@', '--to', 'unix:/tmp/homeclaude-kitty', 'send-text', '/home/wojtmic/claude-corner/.clauderc\n'])
+    subprocess.run(['kitten', '@', '--to', 'unix:/tmp/homeclaude-kitty', 'send-text', os.path.expanduser('~/claude-corner/.clauderc\n')])
     return term_read()
 
 @term_mcp.tool()
